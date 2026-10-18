@@ -120,7 +120,11 @@ fn handle_init(root: &Path, args: &cli::InitArgs) {
 
             println!("{}", "🎉 Initialized AIFlow project successfully!".green().bold());
             println!("  Preset:        {}", args.preset.magenta());
-            println!("  Artifacts:     .aiflow/project.yaml, workflow.yaml, state.yaml, spec.md, tasks.md\n");
+            if matches!(args.preset.as_str(), "ml" | "deep-learning" | "deeplearning") {
+                println!("  Artifacts:     .aiflow/project.yaml, workflow.yaml, state.yaml, spec.md, tasks.md, commands/\n");
+            } else {
+                println!("  Artifacts:     .aiflow/project.yaml, workflow.yaml, state.yaml, spec.md, tasks.md\n");
+            }
             println!("Next Steps:");
             println!("  1. View project status:    {}", "aiflow status".bold().cyan());
             println!("  2. See next action:        {}", "aiflow next".bold().cyan());
@@ -154,10 +158,11 @@ fn handle_status(root: &Path, json: bool, welcome: bool) {
         }));
 
         println!("{}", "Getting Started:".bold());
-        println!("  1. {}   Initialize .aiflow in this repository", "aiflow init".cyan());
-        println!("  2. {}   Use 4-phase lean preset (Specify->Build->Verify->Ship)", "aiflow init --preset lean".cyan());
-        println!("  3. {}   Select active AI subscription stack", "aiflow stack switch".cyan());
-        println!("  4. {}   Inspect fleet across workspace repositories\n", "aiflow projects".cyan());
+        println!("  1. {}   Initialize .aiflow standard 5-phase preset", "aiflow init".cyan());
+        println!("  2. {}   Use 4-phase lean preset (Plan->Build->Verify->Ship)", "aiflow init --preset lean".cyan());
+        println!("  3. {}   Use 4-phase ML preset (Spec->Data Pipeline->Model Layers->Training Loop)", "aiflow init --preset ml".cyan());
+        println!("  4. {}   Select active AI subscription stack", "aiflow stack switch".cyan());
+        println!("  5. {}   Inspect fleet across workspace repositories\n", "aiflow projects".cyan());
         return;
     }
 

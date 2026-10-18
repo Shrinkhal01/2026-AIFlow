@@ -137,7 +137,14 @@ Specify ──> Plan ──> Build ──> Verify ──> Ship
 | **4. Verify** | Test suite execution, adversarial review, edge-case audit | **Reviewer & Tester (Gemini)** | **Required** (Verification signoff) |
 | **5. Ship** | Documentation updates, README refresh, git tagging | **Release Lead (Human)** | **Required** (Final release) |
 
-*(Need more or fewer phases? Switch anytime with `--preset lean` for 4 phases or `--preset rigorous` for the 10-phase enterprise lifecycle).*
+*(Need more or fewer phases? Switch anytime with `--preset lean` for 4 general phases, or `--preset ml` for the 4-phase Deep Learning & Model Development workflow).*
+
+#### Machine Learning & Deep Learning Preset (`aiflow init --preset ml`)
+Tailored for model development, neural network authoring, and tensor validation:
+- **Step 1 (Spec):** Use `/grill-with-docs` to define input/output dimensions, evaluation metrics, and dataset boundaries.
+- **Step 2 (Data Pipeline):** Use `/tdd` to write tests for data loading, transformations, and feature extraction modules.
+- **Step 3 (Model Layers):** Write isolated tensor tests for custom layers or loss functions using `/tdd`.
+- **Step 4 (Training Loop):** Implement the training loop, and if you hit convergence or gradient bugs, run `/diagnosing-bugs`.
 
 ---
 

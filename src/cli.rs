@@ -63,7 +63,7 @@ pub struct BannerArgs {
 
 #[derive(Args, Debug)]
 pub struct InitArgs {
-    /// Workflow preset to use: 'standard' (5 phases, default) or 'lean' (4 phases)
+    /// Workflow preset to use: 'standard' (5 phases, default), 'lean' (4 phases), or 'ml' (4 ML phases)
     #[arg(short, long, default_value = "standard")]
     pub preset: String,
 

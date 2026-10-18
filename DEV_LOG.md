@@ -83,6 +83,27 @@ This document tracks all design decisions, toolchain configurations, milestones 
   - Added `aiflow banner [--ascii | --image | --welcome]` and `aiflow status --welcome`.
   - Preserves clean JSON mode (`aiflow status --json`) without ANSI interference.
 
+### Step 6: Machine Learning & Deep Learning Preset (Oct 2026, v0.4.1)
+- **Domain Modeling (`src/domain.rs`):** Added `WorkflowConfig::ml_4_phase()` defining the 4-phase model development lifecycle:
+  1. `spec` (Spec): input/output tensor dimensions, evaluation metrics, dataset boundaries.
+  2. `data-pipeline` (Data Pipeline): test data loading, transforms, and feature extraction.
+  3. `model-layers` (Model Layers): isolated tensor tests for custom layers and loss functions.
+  4. `training-loop` (Training Loop): training loop implementation and convergence/gradient bug diagnosis.
+- **FSM Recommendation Engine (`src/fsm.rs`):**
+  - Configured `compute_next_action` to directly surface the required AI prompt slash commands:
+    - Step 1: `/grill-with-docs "Define input/output dimensions, evaluation metrics, and dataset boundaries"`
+    - Step 2: `/tdd "Write tests for <task>"` (data loading & feature extraction)
+    - Step 3: `/tdd "Write isolated tensor tests for <task>"` (custom layers & loss functions)
+    - Step 4: `/diagnosing-bugs "Diagnose convergence or gradient issues in training loop"`
+- **Artifact Scaffolding & Slash Commands (`src/storage.rs`):**
+  - Generated ML-tailored `.aiflow/spec.md` with explicit sections for Tensor Shapes, Dtypes, Evaluation Metrics, and Preprocessing Bounds.
+  - Generated ML-tailored `.aiflow/tasks.md` with phased TDD checklists.
+  - Scaffolded `.aiflow/commands/` containing prompt instructions for `/grill-with-docs.md`, `/tdd.md`, and `/diagnosing-bugs.md`.
+- **CLI & Test Suite:**
+  - Added `--preset ml` to `aiflow init`.
+  - Added 3 comprehensive unit tests across domain, fsm, and storage modules (11/11 tests passing).
+  - Built optimized release binary and updated `~/.cargo/bin/aiflow`.
+
 ---
 
 ## File Manifest

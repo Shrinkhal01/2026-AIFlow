@@ -143,6 +143,54 @@ impl WorkflowConfig {
             ],
         }
     }
+
+    /// The 4-phase Deep Learning / Machine Learning workflow:
+    /// Step 1 (Spec): Use /grill-with-docs to define input/output dimensions, evaluation metrics, and dataset boundaries.
+    /// Step 2 (Data Pipeline): Use /tdd to write tests for data loading, transformations, and feature extraction modules.
+    /// Step 3 (Model Layers): Write isolated tensor tests for custom layers or loss functions using /tdd.
+    /// Step 4 (Training Loop): Implement the training loop, and if you hit convergence or gradient bugs, run /diagnosing-bugs.
+    pub fn ml_4_phase() -> Self {
+        Self {
+            version: "1.0".to_string(),
+            name: "Machine Learning Model Workflow".to_string(),
+            preset: "ml".to_string(),
+            initial_phase: "spec".to_string(),
+            phases: vec![
+                Phase {
+                    id: "spec".to_string(),
+                    name: "Spec".to_string(),
+                    role: "architect".to_string(),
+                    required_artifacts: vec![".aiflow/spec.md".to_string()],
+                    requires_human_approval: true,
+                    next_phase: Some("data-pipeline".to_string()),
+                },
+                Phase {
+                    id: "data-pipeline".to_string(),
+                    name: "Data Pipeline".to_string(),
+                    role: "implementer".to_string(),
+                    required_artifacts: vec![],
+                    requires_human_approval: false,
+                    next_phase: Some("model-layers".to_string()),
+                },
+                Phase {
+                    id: "model-layers".to_string(),
+                    name: "Model Layers".to_string(),
+                    role: "implementer".to_string(),
+                    required_artifacts: vec![],
+                    requires_human_approval: false,
+                    next_phase: Some("training-loop".to_string()),
+                },
+                Phase {
+                    id: "training-loop".to_string(),
+                    name: "Training Loop".to_string(),
+                    role: "implementer".to_string(),
+                    required_artifacts: vec![],
+                    requires_human_approval: true,
+                    next_phase: None,
+                },
+            ],
+        }
+    }
 }
 
 fn default_ai_stack() -> String {
@@ -357,5 +405,19 @@ mod tests {
         assert!(res.is_ok());
         assert_eq!(cfg.ai_stack, "claude-coder");
         assert!(cfg.roles.get("architect").unwrap().contains("chatgpt"));
+    }
+
+    #[test]
+    fn test_ml_workflow_preset() {
+        let wf = WorkflowConfig::ml_4_phase();
+        assert_eq!(wf.preset, "ml");
+        assert_eq!(wf.initial_phase, "spec");
+        assert_eq!(wf.phases.len(), 4);
+        assert_eq!(wf.phases[0].id, "spec");
+        assert_eq!(wf.phases[1].id, "data-pipeline");
+        assert_eq!(wf.phases[2].id, "model-layers");
+        assert_eq!(wf.phases[3].id, "training-loop");
+        assert!(wf.phases[0].requires_human_approval);
+        assert!(wf.phases[3].requires_human_approval);
     }
 }
